@@ -51,20 +51,27 @@ func! rainbow#load(...)
         cal rainbow#clear()
     endif
 
-    if a:0 >= 1
-        let b:loaded = a:1
-    elseif &ft == 'cpp'
+    " [Dan Barrese][2014.01.08] Allowing for file-specific operator matching
+    " through the g:rainbow_match variable.
+    if &ft == 'cpp'
         let b:loaded = [
                     \ ['(', ')'],
                     \ ['\[', '\]'],
                     \ ['{', '}'],
                     \ ['\v%(<operator\_s*)@<!%(%(\_i|template\_s*)@<=\<[<#=]@!|\<@<!\<[[:space:]<#=]@!)', '>']
                     \ ]
+    elseif exists('g:rainbow_match')
+        let b:loaded = g:rainbow_match
     else
         let b:loaded = [ ['(', ')'], ['\[', '\]'], ['{', '}'] ]
     endif
 
-    let b:operators = (a:0 < 2) ? '"\v[{\[(<_"''`#*/>)\]}]@![[:punct:]]|\*/@!|/[/*]@!|\<#@!|#@<!\>"' : a:2
+    " [Dan Barrese][2014.01.08] Allowing for user-specified operators.
+    if exists('g:rainbow_punctuation')
+        let b:operators = '"'.g:rainbow_punctuation.'"'
+    else
+        let b:operators = (a:0 < 2) ? '"\v[{\[(<_"''`#*/>)\]}]@![[:punct:]]|\*/@!|/[/*]@!|\<#@!|#@<!\>"' : a:3
+    endif
 
     let str = 'TOP'
     for each in range(1, s:max)
@@ -137,19 +144,9 @@ func! rainbow#toggle()
     endif
 endfunc
 
+" [Dan Barrese][2014.01.08] Removed g:rainbow_load_separately logic.
 if exists('g:rainbow_active') && g:rainbow_active
-    if exists('g:rainbow_load_separately')
-        let ps = g:rainbow_load_separately
-        for i in range(len(ps))
-            if len(ps[i]) < 3
-                exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1])' , ps[i][0] , i)
-            else
-                exe printf('au syntax,colorscheme %s call rainbow#load(ps[%d][1] , ps[%d][2])' , ps[i][0] , i , i)
-            endif
-        endfor
-    else
-        au syntax,colorscheme * call rainbow#load()
-    endif
+    au syntax,colorscheme * call rainbow#load()
 endif
 
 command! RainbowToggle call rainbow#toggle()
