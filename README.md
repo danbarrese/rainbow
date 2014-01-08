@@ -1,3 +1,20 @@
+###Changes made by Dan Barrese
+
+Custom punctuation per file type:
+    let s:gt_lt = '\|\( > \)\|\( < \)'
+    let g:rainbow_punctuation                          = '[`~!@$%^&\*\-_\=\+\|;:",./\?—·“”]'.s:gt_lt "Default
+    autocmd FileType erlang  let g:rainbow_punctuation = '[`~!@$^&\*\-_\=\+\|;:,<.>\/\?·]'
+    autocmd FileType math    let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'
+    autocmd FileType sh      let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'
+    autocmd FileType text    let g:rainbow_punctuation = '[`~@$%^&\-_\=\+\|;:",./\?—·“”]'.s:gt_lt
+    autocmd FileType vim     let g:rainbow_punctuation = '[`~!@$%^&\*\-\+\|;:,<.>\/\?·]'
+    autocmd FileType vimwiki let g:rainbow_punctuation = '[`~@$%^&\-_\+\|;:",./\?—·“”]'
+
+Custom punctuation per file type:
+    autocmd FileType html    let g:rainbow_match = [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]
+    autocmd FileType tex     let g:rainbow_match = [['(', ')'], ['\[', '\]']]
+    autocmd FileType vimwiki let g:rainbow_match = [['(', ')'], ['{', '}']]
+
 #Rainbow Parentheses Improved
 
 This is a fork of [Rainbow Parentheses Improved](http://www.vim.org/scripts/script.php?script_id=4176) by [luo chen](http://www.vim.org/account/profile.php?user_id=53618).
