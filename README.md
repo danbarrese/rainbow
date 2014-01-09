@@ -3,20 +3,24 @@
 Custom punctuation per file type:
 ```vim
 let s:gt_lt = '\|\( > \)\|\( < \)'
-let g:rainbow_punctuation                          = '[`~!@$%^&\*\-_\=\+\|;:",./\?—·“”]'.s:gt_lt "Default
-autocmd FileType erlang  let g:rainbow_punctuation = '[`~!@$^&\*\-_\=\+\|;:,<.>\/\?·]'
-autocmd FileType math    let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'
-autocmd FileType sh      let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'
-autocmd FileType text    let g:rainbow_punctuation = '[`~@$%^&\-_\=\+\|;:",./\?—·“”]'.s:gt_lt
-autocmd FileType vim     let g:rainbow_punctuation = '[`~!@$%^&\*\-\+\|;:,<.>\/\?·]'
-autocmd FileType vimwiki let g:rainbow_punctuation = '[`~@$%^&\-_\+\|;:",./\?—·“”]'
+let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:",./\?—·“”]'.s:gt_lt "Default
+autocmd FileType *
+            \ if       &ft == "text"      |   let g:rainbow_punctuation = '[`~@$%^&\-_\=\+\|;:",./\?—·“”]'.s:gt_lt   |
+            \ elseif   &ft == "sh"        |   let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'       |
+            \ elseif   &ft == "vim"       |   let g:rainbow_punctuation = '[`~!@$%^&\*\-\+\|;:,<.>\/\?·]'            |
+            \ elseif   &ft == "vimwiki"   |   let g:rainbow_punctuation = '[`~@$%^&\-_\+\|;:",./\?—·“”]'             |
+            \ elseif   &ft == "math"      |   let g:rainbow_punctuation = '[`~!@$%^&\*\-_\=\+\|;:\",<.>\/\?·]'       |
+            \ elseif   &ft == "erlang"    |   let g:rainbow_punctuation = '[`~!@$^&\*\-_\=\+\|;:,<.>\/\?·]'          |
+            \ endif
 ```
 
-Custom punctuation per file type:
+Removed use of g:rainbow_load_separately because it didn't work for my purposes.  Now using g:rainbow_match.  Custom punctuation per file type:
 ```vim
-autocmd FileType html    let g:rainbow_match = [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]
-autocmd FileType tex     let g:rainbow_match = [['(', ')'], ['\[', '\]']]
-autocmd FileType vimwiki let g:rainbow_match = [['(', ')'], ['{', '}']]
+autocmd FileType *
+            \ if       &ft == "html"      |   let g:rainbow_match = [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']]   |
+            \ elseif   &ft == "tex"       |   let g:rainbow_match = [['(', ')'], ['\[', '\]']]                                          |
+            \ elseif   &ft == "vimwiki"   |   let g:rainbow_match = [['(', ')'], ['{',  '}']]                                           |
+            \ endif
 ```
 
 #Rainbow Parentheses Improved
